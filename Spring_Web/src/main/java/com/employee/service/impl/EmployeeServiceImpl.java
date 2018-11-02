@@ -2,6 +2,7 @@ package com.employee.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -32,14 +33,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Employee createEmployee(Employee employee) {
-		
+
 		return employeeDao.save(employee);
 
 	}
-	
+
 	@Override
 	public void deleteEmployee(Long id) {
 		employeeDao.deleteById(id);
+	}
+
+	@Override
+	public Optional<Employee> findByName(String name) {
+		return employeeDao.findByName(name);
+	}
+
+	@Override
+	public Optional<Employee> findByIdAndName(Long id, String name) {
+		return employeeDao.findByIdAndName(id, name);
+	}
+
+	@Override
+	public Iterable<Employee> saveEmployees(Set<Employee> employees) {
+		return employeeDao.saveAll(employees);
 	}
 
 }
