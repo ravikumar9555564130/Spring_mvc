@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.employee.entity.Department;
 import com.employee.entity.Employee;
@@ -20,6 +21,7 @@ import com.employee.service.impl.EmployeeServiceImpl;
 @ComponentScan(basePackages = { "com.employee" })
 @EntityScan(basePackages = { "com.employee" })
 @EnableJpaRepositories("com.employee")
+@EnableTransactionManagement
 public class SpringWebApplication {
 
 	public static void main(String[] args) {
@@ -29,7 +31,7 @@ public class SpringWebApplication {
 
 		saveEmployees(employeeService);
 
-		getEmployee(employeeService);
+		// getEmployee(employeeService);
 	}
 
 	private static void saveEmployees(EmployeeService employeeService) {
@@ -49,13 +51,20 @@ public class SpringWebApplication {
 
 		Employee employee2 = new Employee();
 		employee2.setName("amit");
-		employee2.setAddress("delhi");
+		employee2.setAddress("pune");
 		employee2.setDepartment(department);
-		
+
 		employees.add(employee2);
 
-		//department.setEmployees(employees);
-		
+		Employee employee3 = new Employee();
+		employee3.setName("rohit");
+		employee3.setAddress("delhi");
+		employee3.setDepartment(department);
+
+		employees.add(employee3);
+
+		// department.setEmployees(employees);
+
 		employeeService.saveEmployees(employees);
 	}
 

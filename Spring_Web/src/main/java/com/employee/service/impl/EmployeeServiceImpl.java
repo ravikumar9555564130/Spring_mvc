@@ -4,18 +4,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.transaction.Transactional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.employee.dao.EmployeeDao;
 import com.employee.entity.Employee;
 import com.employee.service.EmployeeService;
 
 @Service
-@Transactional
 public class EmployeeServiceImpl implements EmployeeService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
 	@Autowired
 	private EmployeeDao employeeDao;
@@ -54,8 +58,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
+    @Transactional(propagation = Propagation.REQUIRED ,isolation=Isolation.READ_UNCOMMITTED)
 	public Iterable<Employee> saveEmployees(Set<Employee> employees) {
-		return employeeDao.saveAll(employees);
+
+		Iterable<Employee> employee = null;
+		employee = employeeDao.saveAll(employees);
+		getException();
+
+		return employee;
+	}
+
+	@Transactional(propagation = Propagation.NEVER ,isolation=Isolation.READ_UNCOMMITTED ,rollbackFor=RuntimeException.class)
+	private void getException() {
+
+		throw new RuntimeException();
+
 	}
 
 }
