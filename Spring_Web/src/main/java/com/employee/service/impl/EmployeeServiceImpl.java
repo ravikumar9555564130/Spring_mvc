@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 		Iterable<Employee> employee = null;
 		employee = employeeDao.saveAll(employees);
-		getException();
+		//getException();
 
 		return employee;
 	}

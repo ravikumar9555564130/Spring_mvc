@@ -8,7 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Employee implements Serializable {
 
 	private static final long serialVersionUID = -3676227775844143615L;
@@ -18,7 +21,7 @@ public class Employee implements Serializable {
 	private Long id;
 	private String name;
 	private String address;
-	
+
 	@ManyToOne(cascade = javax.persistence.CascadeType.ALL)
 	private Department department;
 
