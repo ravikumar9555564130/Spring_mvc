@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.employee.entity.Employee;
+import com.employee.rest.exception.EmployeeNotFoundException;
 import com.employee.service.EmployeeService;
 
 @RestController
+@RequestMapping("/rest")
 public class EmployeeRestController {
 
 	@Autowired
@@ -23,7 +26,12 @@ public class EmployeeRestController {
 
 	@GetMapping("/employee/{id}")
 	public Optional<Employee> getEmployee(@PathVariable("id") Long id) {
-		return employService.getEmployee(id);
+		Optional<Employee> employee = employService.getEmployee(id);
+		System.out.println("empluyee  :: " + employee);
+		if (!employee.isPresent()) {
+			throw new EmployeeNotFoundException("No Record found for Employee id :- " + id);
+		}
+		return employee;
 	}
 
 	@GetMapping("/employee")
