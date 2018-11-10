@@ -19,7 +19,7 @@ import com.employee.service.EmployeeService;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
 	@Autowired
 	private EmployeeDao employeeDao;
@@ -58,17 +58,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-    @Transactional(propagation = Propagation.REQUIRED ,isolation=Isolation.READ_UNCOMMITTED)
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
 	public Iterable<Employee> saveEmployees(Set<Employee> employees) {
 
 		Iterable<Employee> employee = null;
 		employee = employeeDao.saveAll(employees);
-		//getException();
+		// getException();
 
 		return employee;
 	}
 
-	@Transactional(propagation = Propagation.NEVER ,isolation=Isolation.READ_UNCOMMITTED ,rollbackFor=RuntimeException.class)
+	@Transactional(propagation = Propagation.NEVER, isolation = Isolation.READ_UNCOMMITTED, rollbackFor = RuntimeException.class)
 	private void getException() {
 
 		throw new RuntimeException();

@@ -4,11 +4,14 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -16,16 +19,24 @@ import com.employee.entity.Department;
 import com.employee.entity.Employee;
 import com.employee.service.EmployeeService;
 import com.employee.service.impl.EmployeeServiceImpl;
+import com.properties.Propertieshandler;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.employee" })
+@ComponentScan(basePackages = { "com.employee", "com.properties" })
 @EntityScan(basePackages = { "com.employee" })
 @EnableJpaRepositories("com.employee")
 @EnableTransactionManagement
+@PropertySource("classpath:test.properties")
 public class SpringWebApplication {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(SpringWebApplication.class, args);
+
+		//reading properties file
+		Propertieshandler Propertieshandler = context.getBean(Propertieshandler.class);
+		Propertieshandler.readingPropertiesFile();
 
 		EmployeeService employeeService = context.getBean(EmployeeServiceImpl.class);
 
