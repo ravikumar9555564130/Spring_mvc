@@ -1,5 +1,6 @@
 package com.employee.service.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -58,7 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED)
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_UNCOMMITTED, readOnly = true, rollbackFor = RuntimeException.class)
 	public Iterable<Employee> saveEmployees(Set<Employee> employees) {
 
 		Iterable<Employee> employee = null;
